@@ -17,7 +17,7 @@ export function SimpleTable() {
 
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>Tabla de frecuencia simple.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>X</TableHead>
