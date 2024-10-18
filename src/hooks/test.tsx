@@ -1,4 +1,4 @@
-import { absFrequency, chunckArray, cumulativeAbsFrequency } from '@/lib/utils'
+import { absFrequency, chunkArray, cumulativeAbsFrequency } from '@/lib/utils'
 
 export const data = [
   1.09, 1.74, 1.58, 2.11, 1.64, 1.79, 1.37, 1.75, 1.92, 1.47, 2.03, 1.86, 0.72,
@@ -8,26 +8,29 @@ export const data = [
 ]
 
 export function useSimpleTableData(data: number[]) {
-  const chunckSize = 8
-  // const chuncks = chunckArray(data, chunckSize)
-  const sorted = [...data].sort((a, b) => a - b)
-  const sortedChucnks = chunckArray(sorted, chunckSize)
-  const hashmap = absFrequency(sortedChucnks)
-  const keys = [...hashmap.keys()]
-  const cumulativeFre = cumulativeAbsFrequency([...hashmap.values()])
-  const totalhi = [...hashmap.values()].reduce((acc, cur) => acc + cur, 0)
-  const hiArr = [...hashmap.values()].map(v => v / totalhi)
-  const cumulativeHi = cumulativeAbsFrequency(hiArr)
+  const chunkSize = 8;
+  
+  // Sort and chunk the data
+  const sortedChunks = chunkArray([...data].sort((a, b) => a - b), chunkSize);
+  
+  // Calculate frequencies and cumulative frequencies
+  const frequencyMap = absFrequency(sortedChunks);
+  const keys = Array.from(frequencyMap.keys());
+  const frequencies = Array.from(frequencyMap.values());
+  
+  const totalFrequency = frequencies.reduce((acc, cur) => acc + cur, 0);
+  
+  // Calculate relative and cumulative relative frequencies
+  const relativeFrequencies = frequencies.map(freq => freq / totalFrequency);
+  const cumulativeFrequency = cumulativeAbsFrequency(frequencies);
+  const cumulativeRelativeFrequency = cumulativeAbsFrequency(relativeFrequencies);
 
-  return keys.map((k, index) => {
-    const val = hashmap.get(k) as number
-
-    return {
-      x: k,
-      fi: val,
-      Fi: cumulativeFre[index],
-      hi: hiArr[index],
-      Hi: cumulativeHi[index]
-    }
-  })
+  // Build the result array
+  return keys.map((key, index) => ({
+    x: key,
+    fi: frequencies[index],
+    Fi: cumulativeFrequency[index],
+    hi: relativeFrequencies[index],
+    Hi: cumulativeRelativeFrequency[index]
+  }));
 }

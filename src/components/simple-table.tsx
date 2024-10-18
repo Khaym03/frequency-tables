@@ -42,7 +42,7 @@ export function SimpleTable() {
         <TableRow className="text-left">
           <TableCell colSpan={1}>Total</TableCell>
           <TableCell className="text-left">{totalfi}</TableCell>
-          <TableCell colSpan={1}>...</TableCell>
+          <TableCell colSpan={1}>{simpleData.at(-1)?.Fi.toFixed(2)}</TableCell>
           <TableCell className="text-left">{totalhi}</TableCell>
           <TableCell className="text-left">
             {simpleData.at(-1)?.Hi.toFixed(2)}

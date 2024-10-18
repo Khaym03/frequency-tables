@@ -32,7 +32,7 @@ export function cumulativeAbsFrequency(absFrequencyValues: number[]) {
   return result
 }
 
-export function chunckArray(nums: number[], chunckSize: number){
+export function chunkArray(nums: number[], chunckSize: number){
   const result: number[][] = []
 
   for (let i = 0; i < nums.length; i += chunckSize) {
